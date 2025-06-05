@@ -1,1 +1,90 @@
-<h1>hola</h1>
+{% extends './plantilla.html' %}
+
+{% block contenido %}
+<br>
+<h1 class="text-center">Listado de Cines</h1>
+<hr>
+
+<div class="row">
+    <div class="text-end">
+        <a href="nuevoCine" class="btn btn-info text-right">
+            Agregar Cine
+        </a>
+    </div>
+</div>
+<br>
+
+<table class="table table-bordered table-striped table-hover" id="tbl_cines">
+    <thead>
+        <tr class="bg-primary">
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>DIRECCIÓN</th>
+            <th>CIUDAD</th>
+            <th>CAPACIDAD</th>
+            <th>SALAS</th>
+            <th>ACCIONES</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cine in cines %}
+            <tr>
+                <td>{{ cine.id }}</td>
+                <td>{{ cine.nombre }}</td>
+                <td>{{ cine.direccion }}</td>
+                <td>{{ cine.ciudad }}</td>
+                <td>{{ cine.capacidad_total }}</td>
+                <td>{{ cine.numero_salas }}</td>
+                <td>
+                    <a href="editarCine/{{ cine.id }}" class="btn btn-outline-warning">
+                        <i class="fa fa-pen"></i>
+                    </a>
+                    <a href="#" data-id="{{ cine.id }}" class="btn btn-outline-danger btnEliminar">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const botonesEliminar = document.querySelectorAll('.btnEliminar');
+
+        botonesEliminar.forEach(boton => {
+            boton.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = this.getAttribute('data-id');
+
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "¡No podrás revertir esto!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/eliminarCine/${id}`;
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<script>
+    const table = new DataTable('#tbl_cines', {
+        layout: {
+            topStart: {
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            }
+        }
+    });
+</script>
+
+<br><br><br><br><br><br>
+{% endblock %}
