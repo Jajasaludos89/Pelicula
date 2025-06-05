@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Cine, Pelicula
+import os
 
 # -----------------------------------------
 # CINES
@@ -20,12 +21,16 @@ def guardar_cine(request):
         ciudad = request.POST["ciudad"]
         capacidad_total = request.POST["capacidad_total"]
         numero_salas = request.POST["numero_salas"]
+
+        logo = request.FILES.get("logo")
+
         Cine.objects.create(
             nombre=nombre,
             direccion=direccion,
             ciudad=ciudad,
             capacidad_total=capacidad_total,
-            numero_salas=numero_salas
+            numero_salas=numero_salas,
+            logo=logo
         )
         messages.success(request, "Cine GUARDADO exitosamente")
         return redirect("/cines")
@@ -43,12 +48,21 @@ def actualizar_cine(request):
         cine.ciudad = request.POST["ciudad"]
         cine.capacidad_total = request.POST["capacidad_total"]
         cine.numero_salas = request.POST["numero_salas"]
+
+        logo = request.FILES.get("logo")
+        if logo:
+            if cine.logo and os.path.isfile(cine.logo.path):
+                os.remove(cine.logo.path)
+            cine.logo = logo
+
         cine.save()
         messages.success(request, "Cine ACTUALIZADO exitosamente")
         return redirect("/cines")
 
 def eliminar_cine(request, id):
     cine = Cine.objects.get(id=id)
+    if cine.logo and os.path.isfile(cine.logo.path):
+        os.remove(cine.logo.path)
     cine.delete()
     messages.success(request, "Cine ELIMINADO exitosamente")
     return redirect("/cines")
@@ -73,12 +87,18 @@ def guardar_pelicula(request):
         fecha_funcion = request.POST["fecha_funcion"]
         cine_id = request.POST["cine"]
         cine = Cine.objects.get(id=cine_id)
+
+        logo = request.FILES.get("logo")
+        archivo = request.FILES.get("archivo")
+
         Pelicula.objects.create(
             titulo=titulo,
             genero=genero,
             duracion=duracion,
             fecha_funcion=fecha_funcion,
-            cine=cine
+            cine=cine,
+            logo=logo,
+            archivo=archivo
         )
         messages.success(request, "Película GUARDADA exitosamente")
         return redirect("/peliculas")
@@ -98,12 +118,29 @@ def actualizar_pelicula(request):
         pelicula.fecha_funcion = request.POST["fecha_funcion"]
         cine_id = request.POST["cine"]
         pelicula.cine = Cine.objects.get(id=cine_id)
+
+        logo = request.FILES.get("logo")
+        archivo = request.FILES.get("archivo")
+
+        if logo:
+            if pelicula.logo and os.path.isfile(pelicula.logo.path):
+                os.remove(pelicula.logo.path)
+            pelicula.logo = logo
+        if archivo:
+            if pelicula.archivo and os.path.isfile(pelicula.archivo.path):
+                os.remove(pelicula.archivo.path)
+            pelicula.archivo = archivo
+
         pelicula.save()
         messages.success(request, "Película ACTUALIZADA exitosamente")
         return redirect("/peliculas")
 
 def eliminar_pelicula(request, id):
     pelicula = Pelicula.objects.get(id=id)
+    if pelicula.logo and os.path.isfile(pelicula.logo.path):
+        os.remove(pelicula.logo.path)
+    if pelicula.archivo and os.path.isfile(pelicula.archivo.path):
+        os.remove(pelicula.archivo.path)
     pelicula.delete()
     messages.success(request, "Película ELIMINADA exitosamente")
     return redirect("/peliculas")

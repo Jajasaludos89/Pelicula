@@ -5,28 +5,30 @@
     <div class="col-md-3"></div>
     <div class="col-md-6 bg-light">
         <h1>Nuevo Cine</h1>
-        <form action="/guardarCine" method="post" enctype="multipart/form-data" id="frm_nuevo_cine">
+        <form action="/guardarCine" id="frm_nuevo_cine" enctype="multipart/form-data" method="post">
             {% csrf_token %}
-
+            
             <label for="">Nombre:</label><br>
-            <input class="form-control" type="text" name="nombre" id="nombre"> <br><br>
+            <input placeholder="Ingrese el nombre del cine" class="form-control" type="text" name="nombre" id="nombre"> <br><br>
 
             <label for="">Dirección:</label><br>
-            <input class="form-control" type="text" name="direccion" id="direccion"> <br><br>
+            <input placeholder="Ingrese la dirección del cine" class="form-control" type="text" name="direccion" id="direccion"> <br><br>
 
             <label for="">Ciudad:</label><br>
-            <input class="form-control" type="text" name="ciudad" id="ciudad"> <br><br>
+            <input placeholder="Ingrese la ciudad" class="form-control" type="text" name="ciudad" id="ciudad"> <br><br>
 
             <label for="">Capacidad Total:</label><br>
-            <input class="form-control" type="number" name="capacidad_total" id="capacidad_total"> <br><br>
+            <input placeholder="Ingrese la capacidad total" class="form-control" type="number" name="capacidad_total" id="capacidad_total"> <br><br>
 
             <label for="">Número de Salas:</label><br>
-            <input class="form-control" type="number" name="numero_salas" id="numero_salas"> <br><br>
+            <input placeholder="Ingrese el número de salas" class="form-control" type="number" name="numero_salas" id="numero_salas"> <br><br>
 
-            <button class="btn btn-info" type="submit">
+            <label for="">Logotipo</label>
+            <input type="file" name="logo" id="logo" class="form-control"> <br>
+
+            <button class="btn btn-success" type="submit">
                 <i class="fa fa-save"></i> Guardar
             </button>
-
             <a class="btn btn-outline-danger" href="/cines">
                 <i class="fa fa-times"></i> Cancelar
             </a>
@@ -38,57 +40,77 @@
 
 <script>
     $("#frm_nuevo_cine").validate({
-        rules:{
-            "nombre":{
-                required:true,
-                minlength:3,
-                maxlength:100
+        rules: {
+            "nombre": {
+                required: true,
+                minlength: 3,
+                maxlength: 100
             },
-            "direccion":{
-                required:true,
-                minlength:5
+            "direccion": {
+                required: true,
+                minlength: 5
             },
-            "ciudad":{
-                required:true,
-                minlength:3
+            "ciudad": {
+                required: true,
+                minlength: 3
             },
-            "capacidad_total":{
-                required:true,
-                number:true,
+            "capacidad_total": {
+                required: true,
+                number: true,
                 min: 1
             },
-            "numero_salas":{
-                required:true,
-                number:true,
+            "numero_salas": {
+                required: true,
+                number: true,
                 min: 1
             },
+            "logo": {
+                required: true,
+                extension: "png|jpg|jpeg"
+            }
         },
-        messages:{
-            "nombre":{
-                required:"Este campo es obligatorio",
-                minlength:"Mínimo 3 caracteres",
-                maxlength:"Máximo 100 caracteres"
+        messages: {
+            "nombre": {
+                required: "Este campo es obligatorio",
+                minlength: "Mínimo 3 caracteres",
+                maxlength: "Máximo 100 caracteres"
             },
-            "direccion":{
-                required:"Este campo es obligatorio",
-                minlength:"Mínimo 5 caracteres"
+            "direccion": {
+                required: "Este campo es obligatorio",
+                minlength: "Mínimo 5 caracteres"
             },
-            "ciudad":{
-                required:"Este campo es obligatorio",
-                minlength:"Mínimo 3 caracteres"
+            "ciudad": {
+                required: "Este campo es obligatorio",
+                minlength: "Mínimo 3 caracteres"
             },
-            "capacidad_total":{
-                required:"Este campo es obligatorio",
-                number:"Ingrese un número válido",
-                min:"Debe ser mayor que 0"
+            "capacidad_total": {
+                required: "Este campo es obligatorio",
+                number: "Ingrese un número válido",
+                min: "Debe ser mayor que 0"
             },
-            "numero_salas":{
-                required:"Este campo es obligatorio",
-                number:"Ingrese un número válido",
-                min:"Debe ser mayor que 0"
+            "numero_salas": {
+                required: "Este campo es obligatorio",
+                number: "Ingrese un número válido",
+                min: "Debe ser mayor que 0"
+            },
+            "logo": {
+                required: "Debe subir un logotipo",
+                extension: "Solo se permite archivos .png, .jpg, .jpeg"
             }
         }
     });
 </script>
 
+<script>
+    $("#logo").fileinput({
+            //language: "es",
+            allowedFileExtensions: ["png|jpg|jpeg"],
+            showCaption: false,
+            dropZoneEnabled: true,
+            showClose: false
+    });
+
+</script>
+
 {% endblock %}
+

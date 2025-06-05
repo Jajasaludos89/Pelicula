@@ -23,6 +23,7 @@
             <th>CIUDAD</th>
             <th>CAPACIDAD</th>
             <th>SALAS</th>
+            <th>LOGO</th>
             <th>ACCIONES</th>
         </tr>
     </thead>
@@ -35,6 +36,13 @@
                 <td>{{ cine.ciudad }}</td>
                 <td>{{ cine.capacidad_total }}</td>
                 <td>{{ cine.numero_salas }}</td>
+                <td>
+                    {% if cine.logo %}
+                        <img src="{{ cine.logo.url }}" alt="Logo del Cine" width="100px" height="100px">
+                    {% else %}
+                        Ninguno
+                    {% endif %}
+                </td>
                 <td>
                     <a href="editarCine/{{ cine.id }}" class="btn btn-outline-warning">
                         <i class="fa fa-pen"></i>
