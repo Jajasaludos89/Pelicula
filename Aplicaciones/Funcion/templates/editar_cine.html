@@ -10,19 +10,29 @@
             <input type="hidden" name="id" value="{{ cine.id }}">
 
             <label for="">Nombre:</label><br>
-            <input class="form-control" type="text" name="nombre" id="nombre" value="{{ cine.nombre }}"> <br><br>
+            <input placeholder="Ingrese el nombre del cine" class="form-control" type="text" name="nombre" id="nombre" value="{{ cine.nombre }}"> <br><br>
 
             <label for="">Dirección:</label><br>
-            <input class="form-control" type="text" name="direccion" id="direccion" value="{{ cine.direccion }}"> <br><br>
+            <input placeholder="Ingrese la dirección del cine" class="form-control" type="text" name="direccion" id="direccion" value="{{ cine.direccion }}"> <br><br>
 
             <label for="">Ciudad:</label><br>
-            <input class="form-control" type="text" name="ciudad" id="ciudad" value="{{ cine.ciudad }}"> <br><br>
+            <input placeholder="Ingrese la ciudad" class="form-control" type="text" name="ciudad" id="ciudad" value="{{ cine.ciudad }}"> <br><br>
 
             <label for="">Capacidad Total:</label><br>
-            <input class="form-control" type="number" name="capacidad_total" id="capacidad_total" value="{{ cine.capacidad_total }}"> <br><br>
+            <input placeholder="Ingrese la capacidad total" class="form-control" type="number" name="capacidad_total" id="capacidad_total" value="{{ cine.capacidad_total }}"> <br><br>
 
             <label for="">Número de Salas:</label><br>
-            <input class="form-control" type="number" name="numero_salas" id="numero_salas" value="{{ cine.numero_salas }}"> <br><br>
+            <input placeholder="Ingrese el número de salas" class="form-control" type="number" name="numero_salas" id="numero_salas" value="{{ cine.numero_salas }}"> <br><br>
+
+            <label for="">Logotipo actual:</label><br>
+            {% if cine.logo %}
+                <img src="{{ cine.logo.url }}" alt="Logo del Cine" width="100px" height="100px"><br><br>
+            {% else %}
+                <p>No hay logotipo cargado.</p>
+            {% endif %}
+
+            <label for="">Cambiar Logotipo:</label>
+            <input type="file" name="logo" id="logo" class="form-control"> <br>
 
             <button class="btn btn-warning" type="submit">
                 <i class="fa fa-pen"></i> Editar
@@ -37,6 +47,7 @@
     <div class="col-md-3"></div>
 </div>
 
+<!-- Validación jQuery -->
 <script>
     $("#frm_editar_cine").validate({
         rules:{
@@ -63,6 +74,9 @@
                 number:true,
                 min: 1
             },
+            "logo": {
+                extension: "png|jpg|jpeg"
+            }
         },
         messages:{
             "nombre":{
@@ -87,6 +101,9 @@
                 required:"Este campo es obligatorio",
                 number:"Ingrese un número válido",
                 min:"Debe ser mayor que 0"
+            },
+            "logo": {
+                extension: "Solo se permiten archivos .png, .jpg, .jpeg"
             }
         }
     });

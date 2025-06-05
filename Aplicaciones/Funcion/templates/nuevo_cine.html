@@ -18,13 +18,14 @@
             <input placeholder="Ingrese la ciudad" class="form-control" type="text" name="ciudad" id="ciudad"> <br><br>
 
             <label for="">Capacidad Total:</label><br>
-            <input placeholder="Ingrese la capacidad total" class="form-control" type="number" name="capacidad_total" id="capacidad_total"> <br><br>
+            <input placeholder="Ingrese la capacidad" class="form-control" type="number" name="capacidad_total" id="capacidad_total" required min="5"> <br><br>
+
 
             <label for="">Número de Salas:</label><br>
-            <input placeholder="Ingrese el número de salas" class="form-control" type="number" name="numero_salas" id="numero_salas"> <br><br>
+            <input placeholder="Ingrese el número de salas" class="form-control" type="number" name="numero_salas" id="numero_salas" required min="1"> <br><br>
 
-            <label for="">Logotipo</label>
-            <input type="file" name="logo" id="logo" class="form-control"> <br>
+            <label for=""></label>
+            <input type="file" name="logo" id="logo" class="form-control" accept="logo/*"> <br>
 
             <button class="btn btn-success" type="submit">
                 <i class="fa fa-save"></i> Guardar
@@ -57,16 +58,17 @@
             "capacidad_total": {
                 required: true,
                 number: true,
-                min: 1
+                min: 5,
+                max: 60
             },
             "numero_salas": {
                 required: true,
                 number: true,
-                min: 1
+                min: 1,
+                max: 10
             },
             "logo": {
                 required: true,
-                extension: "png|jpg|jpeg"
             }
         },
         messages: {
@@ -86,16 +88,17 @@
             "capacidad_total": {
                 required: "Este campo es obligatorio",
                 number: "Ingrese un número válido",
-                min: "Debe ser mayor que 0"
+                min: "Debe ser mayor que 5",
+                max: "Debe ser menor que 60"
             },
             "numero_salas": {
                 required: "Este campo es obligatorio",
                 number: "Ingrese un número válido",
-                min: "Debe ser mayor que 0"
+                min: "Debe ser mayor que 0",
+                max: "Debe ser menor que 10"
             },
             "logo": {
                 required: "Debe subir un logotipo",
-                extension: "Solo se permite archivos .png, .jpg, .jpeg"
             }
         }
     });
