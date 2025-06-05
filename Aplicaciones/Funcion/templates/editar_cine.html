@@ -1,0 +1,95 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+        <h1>Editar Cine</h1>
+        <form action="/actualizarCine" method="post" enctype="multipart/form-data" id="frm_editar_cine"> 
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ cine.id }}">
+
+            <label for="">Nombre:</label><br>
+            <input class="form-control" type="text" name="nombre" id="nombre" value="{{ cine.nombre }}"> <br><br>
+
+            <label for="">Dirección:</label><br>
+            <input class="form-control" type="text" name="direccion" id="direccion" value="{{ cine.direccion }}"> <br><br>
+
+            <label for="">Ciudad:</label><br>
+            <input class="form-control" type="text" name="ciudad" id="ciudad" value="{{ cine.ciudad }}"> <br><br>
+
+            <label for="">Capacidad Total:</label><br>
+            <input class="form-control" type="number" name="capacidad_total" id="capacidad_total" value="{{ cine.capacidad_total }}"> <br><br>
+
+            <label for="">Número de Salas:</label><br>
+            <input class="form-control" type="number" name="numero_salas" id="numero_salas" value="{{ cine.numero_salas }}"> <br><br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i> Editar
+            </button>
+
+            <a class="btn btn-outline-danger" href="/cines">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+        <br>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_editar_cine").validate({
+        rules:{
+            "nombre":{
+                required:true,
+                minlength:3,
+                maxlength:100
+            },
+            "direccion":{
+                required:true,
+                minlength:5
+            },
+            "ciudad":{
+                required:true,
+                minlength:3
+            },
+            "capacidad_total":{
+                required:true,
+                number:true,
+                min: 1
+            },
+            "numero_salas":{
+                required:true,
+                number:true,
+                min: 1
+            },
+        },
+        messages:{
+            "nombre":{
+                required:"Este campo es obligatorio",
+                minlength:"Mínimo 3 caracteres",
+                maxlength:"Máximo 100 caracteres"
+            },
+            "direccion":{
+                required:"Este campo es obligatorio",
+                minlength:"Mínimo 5 caracteres"
+            },
+            "ciudad":{
+                required:"Este campo es obligatorio",
+                minlength:"Mínimo 3 caracteres"
+            },
+            "capacidad_total":{
+                required:"Este campo es obligatorio",
+                number:"Ingrese un número válido",
+                min:"Debe ser mayor que 0"
+            },
+            "numero_salas":{
+                required:"Este campo es obligatorio",
+                number:"Ingrese un número válido",
+                min:"Debe ser mayor que 0"
+            }
+        }
+    });
+</script>
+
+{% endblock %}
