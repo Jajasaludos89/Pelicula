@@ -3,9 +3,7 @@ from django.contrib import messages
 from .models import Cine, Pelicula
 import os
 
-# -----------------------------------------
-# CINES
-# -----------------------------------------
+#Cines
 
 def listar_cines(request):
     cines = Cine.objects.all()
@@ -67,9 +65,7 @@ def eliminar_cine(request, id):
     messages.success(request, "Cine ELIMINADO exitosamente")
     return redirect("/cines")
 
-# -----------------------------------------
-# PELÍCULAS
-# -----------------------------------------
+#Peliculas
 
 def listar_peliculas(request):
     peliculas = Pelicula.objects.select_related("cine")

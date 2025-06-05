@@ -7,7 +7,6 @@ class Cine(models.Model):
     capacidad_total = models.PositiveIntegerField()
     numero_salas = models.PositiveIntegerField()
 
-    # Campo para logo del cine
     logo = models.FileField(upload_to='cine_logo', null=True, blank=True)
 
 
@@ -18,6 +17,5 @@ class Pelicula(models.Model):
     fecha_funcion = models.DateField()
     cine = models.ForeignKey(Cine, on_delete=models.CASCADE, related_name='peliculas')
 
-    # Archivos multimedia de la película
     logo = models.FileField(upload_to='peli_logo', null=True, blank=True)
     archivo = models.FileField(upload_to='peli_archivos', null=True, blank=True)
