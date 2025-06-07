@@ -1,0 +1,131 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg-light">
+        <h1>Editar Película</h1>
+        <form action="/actualizarPelicula" method="post" enctype="multipart/form-data" id="frm_editar_pelicula">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ pelicula.id }}">
+
+            <label for="">Título:</label><br>
+            <input placeholder="Ingrese el Titulo" class="form-control" type="text" name="titulo" id="titulo" value="{{ pelicula.titulo }}"> <br><br>
+
+            <label for="">Fecha de Función:</label><br>
+            <input class="form-control" type="date" name="fecha_funcion" id="fecha_funcion"
+                min="2025-06-05" max="2030-10-10" value="{{ pelicula.fecha_funcion|date:'Y-m-d' }}"> <br><br>
+
+            <label for="">Cine:</label><br>
+            <select class="form-control" name="cine" id="cine">
+                <option value="">Seleccione un cine</option>
+                {% for cine in cines %}
+                    <option value="{{ cine.id }}" {% if cine.id == pelicula.cine.id %}selected{% endif %}>
+                        {{ cine.nombre }}
+                    </option>
+                {% endfor %}
+            </select> <br><br>
+
+            <label for="">Clasificacion:</label><br>
+            <input placeholder="Ingrese la clasificacion" class="form-control" type="text" name="clasificacion" id="clasificacion" value="{{ pelicula.clasificacion }}"> <br><br>
+
+            <label for="">Duración (minutos):</label><br>
+            <input placeholder="Ingrese los minutos" class="form-control" type="number" name="duracion_min" id="duracion_min" value="{{ pelicula.duracion_min }}"> <br><br>
+
+
+            <label for="">portada actual:</label><br>
+            {% if pelicula.imagen %}
+                <img src="{{ pelicula.imagen.url }}" alt="portada" width="100px" height="100px"><br><br>
+            {% else %}
+                <p>No hay portada cargada.</p>
+            {% endif %}
+
+            <label for="">Cambiar portada:</label>
+            <input type="file" name="imagen" id="imagen" class="form-control"> <br>
+
+            <button class="btn btn-warning" type="submit">
+                <i class="fa fa-pen"></i> Editar
+            </button>
+
+            <a class="btn btn-outline-danger" href="/peliculas">
+                <i class="fa fa-times"></i> Cancelar
+            </a>
+        </form>
+        <br>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    $("#frm_editar_pelicula").validate({
+        rules:{
+            "titulo":{
+                required:true,
+                minlength:2,
+                maxlength:150
+            },
+            "clasificacion":{
+                required:true,
+                minlength:3,
+                maxlength:50
+            },
+            "duracion_min":{
+                required:true,
+                number:true,
+                min:1
+            },
+            "fecha_funcion":{
+                required:true,
+                date:true
+            },
+            "cine":{
+                required:true
+            },
+            "imagen": {
+                extension: "png|jpg|jpeg"
+            }
+        },
+        messages:{
+            "titulo":{
+                required:"Por favor llenar este campo",
+                minlength:"Mínimo 2 caracteres",
+                maxlength:"Máximo 150 caracteres"
+            },
+            "clasificacion":{
+                required:"Por favor llenar este campo",
+                minlength:"Mínimo 3 caracteres",
+                maxlength:"Máximo 50 caracteres"
+            },
+            "duracion_min":{
+                required:"Por favor llenar este campo",
+                number:"Ingrese un número válido",
+                min:"Debe ser mayor que 0"
+            },
+            "fecha_funcion":{
+                required:"Por favor llenar este campo",
+                date:"Ingrese una fecha válida",
+                min:"Ingrese una fecha mayor a 05-06-2025",
+                max:"Ingrese una fecha menor a 10-10-2030"
+            },
+            "cine":{
+                required:"Debe seleccionar un cine"
+            },
+            "imagen": {
+                extension: "Solo se permiten archivos .png, .jpg, .jpeg"
+            }
+        }
+    });
+</script>
+
+<script>
+    $("#imagen").fileinput({
+            //language: "es",
+            allowedFileExtensions: ["png|jpg|jpeg"],
+            showCaption: false,
+            dropZoneEnabled: true,
+            showClose: false
+    });
+
+</script>
+
+{% endblock %}

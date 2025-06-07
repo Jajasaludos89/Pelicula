@@ -1,0 +1,97 @@
+{% extends './plantilla.html' %}
+
+{% block contenido %}
+<br>
+<h1 class="text-center">Listado de Películas</h1>
+<hr>
+
+<div class="row">
+    <div class="text-end">
+        <a href="/nuevaPelicula" class="btn btn-info text-right">
+            Agregar Película
+        </a>
+    </div>
+</div>
+<br>
+
+<table class="table table-bordered table-striped table-hover" id="tbl_peliculas">
+    <thead>
+        <tr class="bg-primary">
+            <th>ID</th>
+            <th>TÍTULO</th>
+            <th>FECHA DE FUNCIÓN</th>
+            <th>CINE</th>
+            <th>CLASIFICACION</th>
+            <th>DURACIÓN</th>
+            <th>POSTER_PELICULA</th>
+            <th>ACCIONES</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pelicula in peliculas %}
+            <tr>
+                <td>{{ pelicula.id }}</td>
+                <td>{{ pelicula.titulo }}</td>
+                <td>{{ pelicula.fecha_funcion }}</td>
+                <td>{{ pelicula.cine.nombre }}</td>
+                <td>{{ pelicula.clasificacion }}</td>
+                <td>{{ pelicula.duracion_min }} min</td>
+                
+                <td>
+                    {% if pelicula.imagen %}
+                        <img src="{{ pelicula.imagen.url }}" alt="POSTER_PELICULA" width="100px" height="100px">
+                    {% else %}
+                        Ninguno
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="/editarPelicula/{{ pelicula.id }}" class="btn btn-outline-warning">
+                        <i class="fa fa-pen"></i>
+                    </a>
+                    <a href="#" data-id="{{ pelicula.id }}" class="btn btn-outline-danger btnEliminar">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const botonesEliminar = document.querySelectorAll('.btnEliminar');
+
+        botonesEliminar.forEach(boton => {
+            boton.addEventListener('click', function (e) {
+                e.preventDefault();
+                const id = this.getAttribute('data-id');
+
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "¡No podrás revertir esto!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/eliminarPelicula/${id}`;
+                    }
+                });
+            });
+        });
+
+        const table = new DataTable('#tbl_peliculas', {
+            layout: {
+                topStart: {
+                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                }
+            }
+        });
+    });
+</script>
+
+<br><br><br><br><br><br>
+{% endblock %}
